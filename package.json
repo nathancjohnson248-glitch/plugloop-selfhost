@@ -25,13 +25,16 @@
     "wrangler": "^4.152.0"
   },
   "description": "Plugloop revenue-first analytics, self-hosted on Cloudflare Workers + D1",
+  "bin": {
+    "plugloop": "cli/bin/plugloop.js"
+  },
   "cloudflare": {
     "bindings": {
       "ADMIN_PASSWORD": {
         "description": "Dashboard password. Leave empty to choose one on first visit (open the Worker right after deploying)."
       },
       "STRIPE_WEBHOOK_SECRET": {
-        "description": "Optional. Stripe webhook **Signing secret** (`whsec_\u2026`). You can add it later."
+        "description": "Optional. Stripe webhook **Signing secret** (`whsec_…`). You can add it later."
       },
       "POLAR_WEBHOOK_SECRET": {
         "description": "Optional. Polar webhook secret."
