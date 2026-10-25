@@ -1,0 +1,38 @@
+{
+  "name": "plugloop",
+  "version": "0.1.0",
+  "description": "One-command installer for Plugloop self-host: revenue-first analytics on your own Cloudflare account (Workers + D1).",
+  "type": "module",
+  "bin": {
+    "plugloop": "bin/plugloop.js"
+  },
+  "files": [
+    "bin",
+    "src",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "test": "node --test test/*.test.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": [
+    "analytics",
+    "revenue",
+    "cloudflare",
+    "workers",
+    "d1",
+    "self-hosted",
+    "stripe"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nathancjohnson248-glitch/plugloop-selfhost.git",
+    "directory": "cli"
+  },
+  "homepage": "https://github.com/nathancjohnson248-glitch/plugloop-selfhost#readme",
+  "author": "Nathan Johnson",
+  "license": "SEE LICENSE IN LICENSE"
+}

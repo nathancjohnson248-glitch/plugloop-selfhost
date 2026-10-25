@@ -2,9 +2,46 @@
 
 Revenue-first web analytics that runs entirely in **your own Cloudflare account**: one Worker, one D1 database, free-tier friendly. See which sources, pages and checkouts turn into money you actually *kept*, after refunds, chargebacks and cancellations.
 
+## `npx plugloop@latest` — about 2 minutes
+
+```bash
+npx plugloop@latest
+```
+
+That's the whole install. It downloads the latest release into `./plugloop`, runs `wrangler login` (a browser window opens: click **Allow**), creates the D1 database and writes its id into `wrangler.jsonc`, applies the migrations, asks for your dashboard password and stores it as the `ADMIN_PASSWORD` secret, deploys, and prints your dashboard URL. Needs Node.js 18+ and a free Cloudflare account.
+
+To update later (keeps your database, Worker name, settings and secrets):
+
+```bash
+npx plugloop@latest update
+```
+
+Options: `--dir <path>` (project folder), `--name <name>` (Worker and database name), `--ref <tag>` (a specific release), `--force` (redeploy even when up to date). Set `PLUGLOOP_ADMIN_PASSWORD` to skip the password prompt.
+
+## Or use the Deploy button
+
 [![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/nathancjohnson248-glitch/plugloop-selfhost)
 
-> The Deploy button only works once this repository is public (Cloudflare can't clone private repos). Until then, use the manual steps below.
+1. Click **Deploy to Cloudflare** above. Cloudflare copies the repo into your GitHub, creates the D1 database, runs the migrations and deploys.
+2. When it asks for `ADMIN_PASSWORD`, set your dashboard password (or leave it empty and pick one on first visit).
+3. Open `https://plugloop.<your-subdomain>.workers.dev`, add a site, paste the snippet into your `<head>`.
+4. Go to **Setup** and add a webhook for each payment provider you use (see below).
+
+## Or deploy manually
+
+```bash
+git clone https://github.com/nathancjohnson248-glitch/plugloop-selfhost && cd plugloop-selfhost
+npm i
+npx wrangler login
+npx wrangler d1 create plugloop          # copy the database_id it prints into wrangler.jsonc
+npx wrangler d1 migrations apply DB --remote
+npx wrangler secret put ADMIN_PASSWORD   # optional: otherwise pick it on first visit
+npx wrangler deploy
+```
+
+(`npm run deploy` runs the migration and the deploy together.)
+
+> **First-run note:** if you skip `ADMIN_PASSWORD`, the first person to open `/first-run` on your new Worker chooses the password. Open it right after deploying, or set the secret.
 
 ## What you get
 
@@ -21,29 +58,6 @@ Revenue-first web analytics that runs entirely in **your own Cloudflare account*
 - The visitor id is `sha256(daily random salt + site + IP + user agent)`. The **IP is never stored**, and the salt is replaced every day (and deleted by the daily cron), so old ids can't be linked back to anyone.
 - Country comes from Cloudflare's edge, not from an IP lookup.
 - Events older than `RETENTION_DAYS` (default 400) are deleted daily.
-
-## Deploy with the button
-
-1. Click **Deploy to Cloudflare** above. Cloudflare copies the repo into your GitHub, creates the D1 database, runs the migrations and deploys.
-2. When it asks for `ADMIN_PASSWORD`, set your dashboard password (or leave it empty and pick one on first visit).
-3. Open `https://plugloop.<your-subdomain>.workers.dev`, add a site, paste the snippet into your `<head>`.
-4. Go to **Setup** and add a webhook for each payment provider you use (see below).
-
-## Deploy manually
-
-```bash
-git clone https://github.com/nathancjohnson248-glitch/plugloop-selfhost && cd plugloop-selfhost
-npm i
-npx wrangler login
-npx wrangler d1 create plugloop          # copy the database_id it prints into wrangler.jsonc
-npx wrangler d1 migrations apply DB --remote
-npx wrangler secret put ADMIN_PASSWORD   # optional: otherwise pick it on first visit
-npx wrangler deploy
-```
-
-(`npm run deploy` runs the migration and the deploy together.)
-
-> **First-run note:** if you skip `ADMIN_PASSWORD`, the first person to open `/first-run` on your new Worker chooses the password. Open it right after deploying, or set the secret.
 
 ## Connect payment providers
 
@@ -103,3 +117,24 @@ Screenshots: `CHROMIUM=/path/to/chromium npm run shots` with `wrangler dev` runn
 ## Licence
 
 Undecided. See `LICENSE`.
+
+## Publishing the `plugloop` CLI (maintainers)
+
+The installer lives in [`cli/`](cli/) and has no dependencies. Tests mock every Wrangler call: `cd cli && npm test`.
+
+The CLI installs the latest **GitHub release** (falling back to `main` while there are none), so tag a release first:
+
+```bash
+# 1. tag a release of the app so `npx plugloop` and `update` pick it up
+git tag v0.1.0 && git push origin v0.1.0
+#    then on GitHub: Releases → Draft a new release → choose v0.1.0 → Publish
+
+# 2. publish the CLI
+cd cli
+npm test
+npm login                  # once, as the npm account that should own "plugloop"
+npm publish --access public
+npm view plugloop version  # check it's live, then try: npx plugloop@latest --help
+```
+
+For later CLI changes, bump `version` in `cli/package.json` (`npm version patch`) before `npm publish`. App-only changes need just a new GitHub release; users get them with `npx plugloop@latest update`.

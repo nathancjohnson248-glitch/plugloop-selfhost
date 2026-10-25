@@ -12,7 +12,8 @@
     "test": "vitest run",
     "typecheck": "tsc --noEmit",
     "shots": "node scripts/shots.mjs",
-    "schema:sync": "node scripts/sync-schema.mjs"
+    "schema:sync": "node scripts/sync-schema.mjs",
+    "test:cli": "cd cli && npm test"
   },
   "devDependencies": {
     "@cloudflare/vitest-plugin": "^1.4.7",
@@ -30,7 +31,7 @@
         "description": "Dashboard password. Leave empty to choose one on first visit (open the Worker right after deploying)."
       },
       "STRIPE_WEBHOOK_SECRET": {
-        "description": "Optional. Stripe webhook **Signing secret** (`whsec_…`). You can add it later."
+        "description": "Optional. Stripe webhook **Signing secret** (`whsec_\u2026`). You can add it later."
       },
       "POLAR_WEBHOOK_SECRET": {
         "description": "Optional. Polar webhook secret."
