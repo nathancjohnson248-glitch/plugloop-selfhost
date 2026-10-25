@@ -6,3 +6,4 @@ node_modules/
 dist/
 shots/*.log
 shots/dev.log
+*.bundle
