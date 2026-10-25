@@ -2,10 +2,10 @@
 
 Revenue-first web analytics that runs entirely in **your own Cloudflare account**: one Worker, one D1 database, free-tier friendly. See which sources, pages and checkouts turn into money you actually *kept*, after refunds, chargebacks and cancellations.
 
-## `npx plugloop@latest` — about 2 minutes
+## `npx github:nathancjohnson248-glitch/plugloop-selfhost` — about 2 minutes
 
 ```bash
-npx plugloop@latest
+npx github:nathancjohnson248-glitch/plugloop-selfhost
 ```
 
 That's the whole install. It downloads the latest release into `./plugloop`, runs `wrangler login` (a browser window opens: click **Allow**), creates the D1 database and writes its id into `wrangler.jsonc`, applies the migrations, asks for your dashboard password and stores it as the `ADMIN_PASSWORD` secret, deploys, and prints your dashboard URL. Needs Node.js 18+ and a free Cloudflare account.
@@ -13,7 +13,7 @@ That's the whole install. It downloads the latest release into `./plugloop`, run
 To update later (keeps your database, Worker name, settings and secrets):
 
 ```bash
-npx plugloop@latest update
+npx github:nathancjohnson248-glitch/plugloop-selfhost update
 ```
 
 Options: `--dir <path>` (project folder), `--name <name>` (Worker and database name), `--ref <tag>` (a specific release), `--force` (redeploy even when up to date). Set `PLUGLOOP_ADMIN_PASSWORD` to skip the password prompt.
@@ -134,7 +134,7 @@ cd cli
 npm test
 npm login                  # once, as the npm account that should own "plugloop"
 npm publish --access public
-npm view plugloop version  # check it's live, then try: npx plugloop@latest --help
+npm view plugloop version  # check it's live, then try: npx github:nathancjohnson248-glitch/plugloop-selfhost --help
 ```
 
-For later CLI changes, bump `version` in `cli/package.json` (`npm version patch`) before `npm publish`. App-only changes need just a new GitHub release; users get them with `npx plugloop@latest update`.
+For later CLI changes, bump `version` in `cli/package.json` (`npm version patch`) before `npm publish`. App-only changes need just a new GitHub release; users get them with `npx github:nathancjohnson248-glitch/plugloop-selfhost update`.
