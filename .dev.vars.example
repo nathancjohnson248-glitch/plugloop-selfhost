@@ -1,0 +1,8 @@
+# Dashboard password (single owner). Leave empty to pick one on first visit instead.
+ADMIN_PASSWORD=
+# Webhook signing secrets: add only the providers you use. See /setup in your dashboard.
+STRIPE_WEBHOOK_SECRET=
+POLAR_WEBHOOK_SECRET=
+LEMONSQUEEZY_WEBHOOK_SECRET=
+DODO_WEBHOOK_SECRET=
+PADDLE_WEBHOOK_SECRET=

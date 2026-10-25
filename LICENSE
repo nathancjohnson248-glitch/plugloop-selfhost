@@ -1,0 +1,13 @@
+LICENSE: NOT YET DECIDED
+
+Copyright (c) 2026 Nathan Johnson. All rights reserved for now.
+
+Licensing for Plugloop Self-Host is undecided. The options on the table are:
+  1. free / open source (e.g. MIT or AGPL-3.0), or
+  2. paid, with a one-time $19 lifetime licence.
+
+Until this file is replaced with a real licence, no permission is granted to copy, modify or
+redistribute this code. There is no licence-key check in the code yet.
+
+Bundled fonts (public/fonts/Geist*) are © Vercel under the SIL Open Font License 1.1, see
+public/fonts/OFL-Geist.txt.

@@ -1,0 +1,8 @@
+_ref/
+node_modules/
+.wrangler/
+.dev.vars
+.seed.sql
+dist/
+shots/*.log
+shots/dev.log

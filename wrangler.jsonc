@@ -1,0 +1,24 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "plugloop",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-10-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "workers_dev": true,
+  "observability": { "enabled": true },
+  // Static files: fonts, logo, favicon. Served before the Worker runs, free and unmetered.
+  "assets": { "directory": "./public", "binding": "ASSETS" },
+  // One D1 database holds sites, events, sessions, sales and settings.
+  // The Deploy button provisions it and fills in database_id; for manual installs run
+  // `npx wrangler d1 create plugloop` and paste the id here.
+  "d1_databases": [
+    { "binding": "DB", "database_name": "plugloop", "database_id": "00000000-0000-0000-0000-000000000000", "migrations_dir": "migrations" }
+  ],
+  // Daily: rotate the visitor-hash salt and drop events older than RETENTION_DAYS.
+  "triggers": { "crons": ["7 0 * * *"] },
+  "vars": {
+    "CURRENCY": "USD",
+    "RETENTION_DAYS": "400",
+    "INCLUDE_TEST_SALES": "false"
+  }
+}
